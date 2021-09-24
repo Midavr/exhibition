@@ -1,0 +1,93 @@
+body{
+    background: url("../img/bg.jpg")no-repeat, #e6e7eb;
+    background-size: cover;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.top-img{
+    max-height: 60px;
+}
+
+.top-logo{
+    min-width: 40px;
+    margin-right: 25px;
+}
+
+.input-group-text{
+    height: 100%;
+}
+
+.card{
+    max-width: 700px;
+    padding: 0;
+}
+
+.w-75{
+    margin: 0 auto;
+}
+
+.catalog-table{
+    margin: 0 auto;
+}
+
+.custom-select {
+    display: inline-block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: .375rem 1.75rem .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    vertical-align: middle;
+    background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center;
+    background-size: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.profile-table{
+    padding: 0;
+}
+
+.badge{
+    color: black;
+}
+
+#payModal .modal-title{
+    display: inline-block;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.footer{
+    background: #070f2a;
+    color: white;
+}
