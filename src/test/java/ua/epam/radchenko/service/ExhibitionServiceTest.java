@@ -56,7 +56,7 @@ class ExhibitionServiceTest {
 
         exhibitionService.changeStatus(exhibition, Status.SUSPENDED);
 
-        assertEquals(exhibition.getExhibitionStatus(), Status.SUSPENDED);
+        assertEquals(Status.SUSPENDED, exhibition.getExhibitionStatus());
         verify(exhibitionDao, times(1)).update(exhibition);
     }
 
@@ -68,7 +68,7 @@ class ExhibitionServiceTest {
 
         exhibitionService.changeStatus(exhibition, Status.ACTIVE);
 
-        assertEquals(exhibition.getExhibitionStatus(), Status.ACTIVE);
+        assertEquals(Status.ACTIVE, exhibition.getExhibitionStatus());
         verify(exhibitionDao, never()).update(exhibition);
     }
 
