@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>78392c3d-5eaa-4f6e-9f7f-266e17738f23.SCHEMA:exhibition</OriginalElement>
+  <nodes>
+    <node x="0.0" y="11.0">78392c3d-5eaa-4f6e-9f7f-266e17738f23.TABLE:exhibition.users</node>
+    <node x="162.0" y="283.0">78392c3d-5eaa-4f6e-9f7f-266e17738f23.TABLE:exhibition.orders</node>
+    <node x="213.0" y="0.0">78392c3d-5eaa-4f6e-9f7f-266e17738f23.TABLE:exhibition.exhibitions</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="78392c3d-5eaa-4f6e-9f7f-266e17738f23.TABLE:exhibition.orders" target="78392c3d-5eaa-4f6e-9f7f-266e17738f23.TABLE:exhibition.users" relationship="REFERENCES">
+      <point x="-30.5" y="-50.5" />
+      <point x="192.5" y="258.0" />
+      <point x="96.5" y="258.0" />
+      <point x="0.0" y="105.5" />
+    </edge>
+    <edge source="78392c3d-5eaa-4f6e-9f7f-266e17738f23.TABLE:exhibition.orders" target="78392c3d-5eaa-4f6e-9f7f-266e17738f23.TABLE:exhibition.exhibitions" relationship="REFERENCES">
+      <point x="30.5" y="-50.5" />
+      <point x="253.5" y="258.0" />
+      <point x="349.5" y="258.0" />
+      <point x="0.0" y="116.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="243.0" y="192.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

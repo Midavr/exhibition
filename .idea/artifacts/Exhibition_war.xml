@@ -8,7 +8,7 @@
       </options>
     </properties>
     <root id="archive" name="Exhibition.war">
-      <element id="artifact" artifact-name="Exhibition:war exploded" />
+      <element id="artifact" artifact-name="Exhibition_war_exploded" />
     </root>
   </artifact>
 </component>

@@ -15,6 +15,8 @@
 <c:set var="ticketsView" scope="page" value="${Views.ORDERS_VIEW}"/>
 <c:set var="adminCatalogView" scope="page" value="${Views.ADMIN_CATALOG_VIEW}"/>
 <c:set var="adminCreateExhibitionView" scope="page" value="${Views.CREATE_EXHIBITION_VIEW}"/>
+<c:set var="profileView" scope="page" value="${Views.PROFILE_VIEW}"/>
+
 <c:set var="currView" scope="page">
     <myLib:viewUri/>
 </c:set>
@@ -43,10 +45,9 @@
 
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li>
-
-            </li>
-            <li><a href="<c:url value="/app/catalog"/>" class="nav-link px-2 link-secondary"><fmt:message key="navbar.catalog"/></a></li>
+            <li><a href="<c:url value="/app/catalog"/>" class="nav-link px-2 link-secondary <c:if test="${catalogView.equals(currView)}">
+                                active
+                            </c:if>"><fmt:message key="navbar.catalog"/></a></li>
             <c:if test="${sessionScope.user.isAdmin()}">
                 <li>
                     <a class="nav-link px-2 link-secondary
@@ -75,7 +76,7 @@
                             class="active"
                         </c:if>
                 >
-                    <a class="nav-link" href="<c:url value="/app/cart"/>">
+                    <a class="nav-link link-secondary" href="<c:url value="/app/cart"/>">
                         <i class="fa fa-shopping-cart fa-lg" aria-hidden="true">&nbsp;</i>
                         <fmt:message key="cart"/>&nbsp;
                         <span class="badge badge-light">
@@ -95,7 +96,7 @@
                             class="active"
                         </c:if>
                 >
-                    <a class="nav-link" href="<c:url value="/app/orders"/>">
+                    <a class="nav-link link-secondary" href="<c:url value="/app/orders"/>">
                         <i class="fa fa-home fa-list fa-lg" aria-hidden="true">&nbsp;</i>
                         <fmt:message key="user.tickets"/>
                     </a>
@@ -107,20 +108,23 @@
 
         <div class="col-md-3 text-end">
             <c:if test="${sessionScope.user eq null}">
-                <a href="<c:url value="/app/signin"/>" class="btn btn-outline-primary me-2"><i class="fa fa-sign-in fa-lg" aria-hidden="true">&nbsp;</i> <fmt:message key="signin"/></a>
-                <a href="<c:url value="/app/signup"/>" class="btn btn-primary"><i class="fa fa-user-plus fa-lg" aria-hidden="true">&nbsp;</i> <fmt:message key="signup"/></a>
+                <a href="<c:url value="/app/signin"/>" class="btn btn-outline-primary me-2 <c:if test="${signInView.equals(currView)}">
+                                active
+                            </c:if>"><i class="fa fa-sign-in fa-lg" aria-hidden="true">&nbsp;</i> <fmt:message key="signin"/></a>
+                <a href="<c:url value="/app/signup"/>" class="btn btn-primary <c:if test="${signUpView.equals(currView)}">
+                                active
+                            </c:if>"><i class="fa fa-user-plus fa-lg" aria-hidden="true">&nbsp;</i> <fmt:message key="signup"/></a>
             </c:if>
             <c:if test="${not empty sessionScope.user}">
-                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdownMenuLink" role="button"
+                    <a class="nav-link link-secondary dropdown-toggle <c:if test="${profileView.equals(currView)}">
+                                    active
+                            </c:if>" href="#" id="profileDropdownMenuLink" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-user-circle-o fa-lg" aria-hidden="true">&nbsp;</i>
                         <c:out value="${sessionScope.user.firstName}"/>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdownMenuLink">
-                        <a class="dropdown-item
-                            <c:if test="${profileView.equals(currView)}">
-                                    active
-                            </c:if>"
+                        <a class="dropdown-item"
                            href="<c:url value="/app/profile"/>"><fmt:message key="profile"/>
                         </a>
                         <a class="dropdown-item" href="<c:url value="/app/signout"/>"><fmt:message key="signout"/></a>
