@@ -8,3 +8,7 @@
 
 ### Модель базы данных
 ![exhibition.png](/database/exhibition.png)
+
+Также в формате .uml находится по пути `database/exhibition.uml`
+
+В MySQL создать базу данных и сгенерировать начальные данные с помощью скрипта `database/exhibitions.sql`
