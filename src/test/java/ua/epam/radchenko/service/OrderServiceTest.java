@@ -5,6 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.dao.OrderDao;
 import ua.epam.radchenko.persistence.entity.Order;
 import ua.epam.radchenko.persistence.entity.User;
@@ -19,7 +21,8 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
     @InjectMocks
-    private OrderService orderService = OrderService.getInstance();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private OrderService orderService = context.getBean("orderService", OrderService.class);
     @Mock
     private OrderDao orderDao;
 

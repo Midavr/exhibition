@@ -5,6 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.dao.UserDao;
 import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.util.PasswordManager;
@@ -20,7 +22,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     @InjectMocks
-    private final UserService userService = UserService.getInstance();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private final UserService userService = context.getBean("userService", UserService.class);
     @Mock
     private UserDao userDao;
     private final String login = "user";

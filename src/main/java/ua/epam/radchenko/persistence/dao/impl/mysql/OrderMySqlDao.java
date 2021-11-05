@@ -7,7 +7,6 @@ import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.persistence.entity.Order;
 import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.persistence.exepion.DaoException;
-import ua.epam.radchenko.util.ResourceManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,27 +15,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class OrderMySqlDao implements OrderDao {
-    private static final String SELECT_ALL =
-            ResourceManager.QUERIES.getProperty("order.select.all");
-    private static final String INSERT =
-            ResourceManager.QUERIES.getProperty("order.insert");
-    private static final String UPDATE =
-            ResourceManager.QUERIES.getProperty("order.update");
-    private static final String DELETE =
-            ResourceManager.QUERIES.getProperty("order.delete");
-    private static final String COUNT =
-            ResourceManager.QUERIES.getProperty("order.count");
-    private static final String WHERE_ID =
-            ResourceManager.QUERIES.getProperty("order.where.id");
-    private static final String WHERE_ACTIVE_AND_USER_ID =
-            ResourceManager.QUERIES.getProperty("order.where.active.and.user");
-    private static final String WHERE_EXPIRED_AND_USER_ID =
-            ResourceManager.QUERIES.getProperty("order.where.expired.and.user");
-    private static final String ORDER_BY_END_DATE =
-            ResourceManager.QUERIES.getProperty("order.select.order");
-    private static final String ORDER_COUNT_ORDERS =
-            ResourceManager.QUERIES.getProperty("order.count.orders");
-
 
     private final UtilMySqlDao<Order> utilMySqlDao;
 
@@ -54,12 +32,16 @@ public class OrderMySqlDao implements OrderDao {
 
     @Override
     public Optional<Order> findOne(Integer id) {
-        return utilMySqlDao.findOne(SELECT_ALL + WHERE_ID, id);
+        return utilMySqlDao.findOne("SELECT * FROM orders JOIN exhibitions" +
+                " ON orders.exhibition_id = exhibitions.exhibition_id" +
+                " JOIN users ON orders.user_id = users.user_id WHERE order_id = ?", id);
     }
 
     @Override
     public List<Order> findAll() {
-        return utilMySqlDao.findAll(SELECT_ALL);
+        return utilMySqlDao.findAll("SELECT * FROM orders JOIN exhibitions" +
+                " ON orders.exhibition_id = exhibitions.exhibition_id" +
+                " JOIN users ON orders.user_id = users.user_id");
     }
 
     @Override
@@ -67,7 +49,9 @@ public class OrderMySqlDao implements OrderDao {
         if (skip < 0 || limit < 0) {
             throw new DaoException("Skip or limit params cannot be negative");
         }
-        return utilMySqlDao.findAll(SELECT_ALL + UtilMySqlDao.LIMIT, skip, limit);
+        return utilMySqlDao.findAll("SELECT * FROM orders JOIN exhibitions" +
+                " ON orders.exhibition_id = exhibitions.exhibition_id" +
+                " JOIN users ON orders.user_id = users.user_id LIMIT ?,?", skip, limit);
     }
 
     @Override
@@ -81,7 +65,7 @@ public class OrderMySqlDao implements OrderDao {
             throw new DaoException("Attempt to insert nullable Order");
         }
         Integer id = utilMySqlDao.executeInsertWithGeneratedPrimaryKey(
-                INSERT,
+                "INSERT INTO orders (exhibition_id, user_id) VALUES(?, ?)",
                 Integer.class,
                 obj.getExhibitionId().getExhibitionId(),
                 obj.getUserId().getUserId());
@@ -97,7 +81,7 @@ public class OrderMySqlDao implements OrderDao {
         }
 
         utilMySqlDao.executeUpdate(
-                UPDATE + WHERE_ID,
+                "UPDATE orders SET exhibition_id = ?, user_id = ? WHERE order_id = ?",
                 obj.getExhibitionId().getExhibitionId(),
                 obj.getUserId().getUserId(),
                 obj.getOrderId());
@@ -106,13 +90,13 @@ public class OrderMySqlDao implements OrderDao {
     @Override
     public void delete(Integer id) {
         utilMySqlDao.executeUpdate(
-                DELETE + WHERE_ID,
+                "DELETE FROM orders WHERE order_id = ?",
                 id);
     }
 
     @Override
     public long getCount() {
-        return utilMySqlDao.getRowsCount(COUNT);
+        return utilMySqlDao.getRowsCount("SELECT COUNT(order_id) FROM orders JOIN exhibitions ON orders.exhibition_id = exhibitions.exhibition_id");
     }
 
     @Override
@@ -130,8 +114,8 @@ public class OrderMySqlDao implements OrderDao {
     @Override
     public long getCountByUserAndStatus(User user, boolean isExpired) {
         return isExpired
-                ? utilMySqlDao.getRowsCount(COUNT + WHERE_EXPIRED_AND_USER_ID, user.getUserId())
-                : utilMySqlDao.getRowsCount(COUNT + WHERE_ACTIVE_AND_USER_ID, user.getUserId());
+                ? utilMySqlDao.getRowsCount("SELECT COUNT(order_id) FROM orders JOIN exhibitions ON orders.exhibition_id = exhibitions.exhibition_id WHERE orders.user_id = ? AND exhibitions.date_end < curdate()", user.getUserId())
+                : utilMySqlDao.getRowsCount("SELECT COUNT(order_id) FROM orders JOIN exhibitions ON orders.exhibition_id = exhibitions.exhibition_id WHERE orders.user_id = ? AND exhibitions.date_end >= curdate()", user.getUserId());
     }
 
     /**
@@ -150,10 +134,10 @@ public class OrderMySqlDao implements OrderDao {
         }
         return isExpired
                 ? utilMySqlDao.findAll(
-                SELECT_ALL + WHERE_EXPIRED_AND_USER_ID + ORDER_BY_END_DATE + UtilMySqlDao.LIMIT,
+                "SELECT * FROM orders JOIN exhibitions ON orders.exhibition_id = exhibitions.exhibition_id JOIN users ON orders.user_id = users.user_id WHERE orders.user_id = ? AND exhibitions.date_end < curdate() ORDER BY exhibitions.date_end ASC LIMIT ?,?",
                 user.getUserId(), skip, limit)
                 : utilMySqlDao.findAll(
-                SELECT_ALL + WHERE_ACTIVE_AND_USER_ID + ORDER_BY_END_DATE + UtilMySqlDao.LIMIT,
+                "SELECT * FROM orders JOIN exhibitions ON orders.exhibition_id = exhibitions.exhibition_id JOIN users ON orders.user_id = users.user_id WHERE orders.user_id = ? AND exhibitions.date_end >= curdate() ORDER BY exhibitions.date_end ASC LIMIT ?,?",
                 user.getUserId(), skip, limit);
     }
 
@@ -161,7 +145,7 @@ public class OrderMySqlDao implements OrderDao {
     public List<Integer> countByOrders(List<Exhibition> exhibitions) {
         List<Integer> res = new ArrayList<>();
         for (Exhibition ex: exhibitions) {
-            res.add((int) utilMySqlDao.getRowsCount(ORDER_COUNT_ORDERS, ex.getExhibitionId()));
+            res.add((int) utilMySqlDao.getRowsCount("SELECT COUNT(orders.exhibition_id) FROM orders WHERE orders.exhibition_id = ?", ex.getExhibitionId()));
         }
         return res;
     }

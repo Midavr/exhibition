@@ -1,6 +1,8 @@
 package ua.epam.radchenko.presentation.command.impl.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.presentation.command.Command;
 import ua.epam.radchenko.presentation.command.CommandResult;
@@ -12,7 +14,6 @@ import ua.epam.radchenko.presentation.util.constants.Attributes;
 import ua.epam.radchenko.presentation.util.constants.RequestParameters;
 import ua.epam.radchenko.presentation.util.constants.Views;
 import ua.epam.radchenko.service.ExhibitionService;
-import ua.epam.radchenko.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +26,8 @@ import java.util.Locale;
 public class GetCatalogCommand implements Command {
     private final static long RECORDS_PER_PAGE = 5;
     private static final Logger LOGGER = LoggerFactory.getLogger(GetCatalogCommand.class);
-    private final ExhibitionService exhibitionService =
-            ServiceFactory.getExhibitionService();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

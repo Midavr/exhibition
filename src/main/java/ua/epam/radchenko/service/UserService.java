@@ -2,6 +2,7 @@ package ua.epam.radchenko.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import ua.epam.radchenko.persistence.dao.UserDao;
 import ua.epam.radchenko.persistence.dao.factory.DaoFactory;
 import ua.epam.radchenko.persistence.entity.User;
@@ -15,22 +16,12 @@ import java.util.Optional;
  * Intermediate layer between command layer and dao layer.
  * Service responsible for processing user-related operations
  */
+@Service
 public class UserService {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(UserService.class);
     private final Role defaultRole = Role.USER;
     private UserDao userDao = DaoFactory.getInstance().getUserDao();
-
-    private UserService() {
-    }
-
-    private static class Singleton {
-        private final static UserService INSTANCE = new UserService();
-    }
-
-    public static UserService getInstance() {
-        return Singleton.INSTANCE;
-    }
 
     public Optional<User> signIn(String login, String password) {
         LOGGER.debug("Attempt to sign in");

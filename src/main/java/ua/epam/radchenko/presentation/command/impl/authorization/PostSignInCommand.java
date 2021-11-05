@@ -2,6 +2,8 @@ package ua.epam.radchenko.presentation.command.impl.authorization;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.presentation.command.Command;
 import ua.epam.radchenko.presentation.command.CommandResult;
@@ -10,7 +12,6 @@ import ua.epam.radchenko.presentation.util.constants.PagesPaths;
 import ua.epam.radchenko.presentation.util.constants.Views;
 import ua.epam.radchenko.presentation.util.mapper.RequestMapperFactory;
 import ua.epam.radchenko.presentation.util.validator.ValidatorManagerFactory;
-import ua.epam.radchenko.service.ServiceFactory;
 import ua.epam.radchenko.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,8 @@ import java.util.Optional;
 
 public class PostSignInCommand implements Command {
     private static Logger LOGGER = LoggerFactory.getLogger(PostSignInCommand.class);
-    private UserService userService = ServiceFactory.getUserService();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private final UserService userService = context.getBean("userService", UserService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

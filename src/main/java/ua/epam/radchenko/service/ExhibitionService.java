@@ -2,6 +2,7 @@ package ua.epam.radchenko.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import ua.epam.radchenko.persistence.dao.ExhibitionDao;
 import ua.epam.radchenko.persistence.dao.factory.DaoFactory;
 import ua.epam.radchenko.persistence.entity.Exhibition;
@@ -11,22 +12,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ExhibitionService {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(ExhibitionService.class);
     private ExhibitionDao exhibitionDao =
             DaoFactory.getInstance().getExhibitionDao();
-
-    private ExhibitionService() {
-    }
-
-    private static class Singleton {
-        private static final ExhibitionService INSTANCE = new ExhibitionService();
-    }
-
-    public static ExhibitionService getInstance() {
-        return ExhibitionService.Singleton.INSTANCE;
-    }
 
     public Exhibition createExhibition(Exhibition exhibition) {
         return exhibitionDao.insert(exhibition);

@@ -2,6 +2,8 @@ package ua.epam.radchenko.presentation.command.impl.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.presentation.command.Command;
 import ua.epam.radchenko.presentation.command.CommandResult;
@@ -11,7 +13,6 @@ import ua.epam.radchenko.presentation.util.constants.Views;
 import ua.epam.radchenko.presentation.util.mapper.RequestMapperFactory;
 import ua.epam.radchenko.presentation.util.validator.ValidatorManagerFactory;
 import ua.epam.radchenko.service.ExhibitionService;
-import ua.epam.radchenko.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +21,9 @@ import java.util.Map;
 public class PostCreateExhibitionCommand implements Command {
     private static Logger LOGGER =
             LoggerFactory.getLogger(PostCreateExhibitionCommand.class);
-    private final ExhibitionService exhibitionService =
-            ServiceFactory.getExhibitionService();
+
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

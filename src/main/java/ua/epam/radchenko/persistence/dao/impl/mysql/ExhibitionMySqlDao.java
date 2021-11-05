@@ -5,7 +5,6 @@ import ua.epam.radchenko.persistence.dao.impl.mysql.mapper.EntityMapper;
 import ua.epam.radchenko.persistence.dao.impl.mysql.mapper.MapperFactory;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.persistence.exepion.DaoException;
-import ua.epam.radchenko.util.ResourceManager;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,20 +12,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class ExhibitionMySqlDao implements ExhibitionDao {
-    private static final String SELECT_ALL =
-            ResourceManager.QUERIES.getProperty("exhibition.select.all");
-    private static final String INSERT =
-            ResourceManager.QUERIES.getProperty("exhibition.insert");
-    private static final String UPDATE =
-            ResourceManager.QUERIES.getProperty("exhibition.update");
-    private static final String DELETE =
-            ResourceManager.QUERIES.getProperty("exhibition.delete");
-    private static final String COUNT =
-            ResourceManager.QUERIES.getProperty("exhibition.count");
-    private static final String WHERE_ID =
-            ResourceManager.QUERIES.getProperty("exhibition.where.id");
-    private static final String WHERE_DATE =
-            ResourceManager.QUERIES.getProperty("exhibition.where.date");
 
     private final UtilMySqlDao<Exhibition> utilMySqlDao;
 
@@ -44,12 +29,12 @@ public class ExhibitionMySqlDao implements ExhibitionDao {
 
     @Override
     public Optional<Exhibition> findOne(Integer id) {
-        return utilMySqlDao.findOne(SELECT_ALL + WHERE_ID, id);
+        return utilMySqlDao.findOne("SELECT * FROM exhibitions WHERE exhibition_id = ?", id);
     }
 
     @Override
     public List<Exhibition> findAll() {
-        return utilMySqlDao.findAll(SELECT_ALL);
+        return utilMySqlDao.findAll("SELECT * FROM exhibitions");
     }
 
 
@@ -58,15 +43,15 @@ public class ExhibitionMySqlDao implements ExhibitionDao {
         if (skip < 0 || limit < 0) {
             throw new DaoException("Skip or limit params cannot be negative");
         }
-        queryBuilder.append(SELECT_ALL);
+        queryBuilder.append("SELECT * FROM exhibitions");
         if(sortDate != null){
-            queryBuilder.append(WHERE_DATE);
+            queryBuilder.append(" WHERE date_start <= ? AND date_end >= ?");
         }
         queryBuilder.append(" ORDER BY ");
         queryBuilder.append(sorting);
         queryBuilder.append(" ");
         queryBuilder.append(sortingType);
-        queryBuilder.append(UtilMySqlDao.LIMIT);
+        queryBuilder.append(" LIMIT ?,?");
         if(sortDate != null){
             return utilMySqlDao.findAll(queryBuilder.toString(), sortDate, sortDate, skip, limit);
         }
@@ -75,9 +60,9 @@ public class ExhibitionMySqlDao implements ExhibitionDao {
 
     public long countDateFiltered(LocalDate sortDate) {
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(SELECT_ALL);
+        queryBuilder.append("SELECT * FROM exhibitions");
         if(sortDate != null){
-            queryBuilder.append(WHERE_DATE);
+            queryBuilder.append(" WHERE date_start <= ? AND date_end >= ?");
             return utilMySqlDao.findAll(queryBuilder.toString(), sortDate, sortDate).size();
         }
         return utilMySqlDao.findAll(queryBuilder.toString()).size();
@@ -87,7 +72,7 @@ public class ExhibitionMySqlDao implements ExhibitionDao {
         if (skip < 0 || limit < 0) {
             throw new DaoException("Skip or limit params cannot be negative");
         }
-        return utilMySqlDao.findAll(SELECT_ALL + UtilMySqlDao.LIMIT, skip, limit);
+        return utilMySqlDao.findAll("SELECT * FROM exhibitions LIMIT ?,?", skip, limit);
     }
 
     @Override
@@ -96,7 +81,7 @@ public class ExhibitionMySqlDao implements ExhibitionDao {
             throw new DaoException("Attempt to insert nullable Exhibition");
         }
         Integer id = utilMySqlDao.executeInsertWithGeneratedPrimaryKey(
-                INSERT,
+                "INSERT INTO exhibitions (exhibition_name, description, price, date_start, date_end, theme, exhibition_status, hall) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
                 Integer.class,
                 obj.getExhibitionName(),
                 obj.getDescription(),
@@ -116,7 +101,7 @@ public class ExhibitionMySqlDao implements ExhibitionDao {
             throw new DaoException("Attempt to update nullable Exhibition");
         }
         utilMySqlDao.executeUpdate(
-                UPDATE + WHERE_ID,
+                "UPDATE exhibitions SET exhibition_name = ?, description = ?, price = ?, date_start = ?, date_end = ?, theme = ?, exhibition_status = ?, hall = ? WHERE exhibition_id = ?",
                 obj.getExhibitionName(),
                 obj.getDescription(),
                 obj.getPrice(),
@@ -131,12 +116,12 @@ public class ExhibitionMySqlDao implements ExhibitionDao {
     @Override
     public void delete(Integer id) {
         utilMySqlDao.executeUpdate(
-                DELETE + WHERE_ID,
+                "DELETE FROM exhibitions WHERE exhibition_id = ?",
                 id);
     }
 
     @Override
     public long getCount() {
-        return utilMySqlDao.getRowsCount(COUNT);
+        return utilMySqlDao.getRowsCount("SELECT COUNT(exhibition_id) FROM exhibitions");
     }
 }

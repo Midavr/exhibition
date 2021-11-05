@@ -5,7 +5,6 @@ import ua.epam.radchenko.persistence.dao.impl.mysql.mapper.EntityMapper;
 import ua.epam.radchenko.persistence.dao.impl.mysql.mapper.MapperFactory;
 import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.persistence.exepion.DaoException;
-import ua.epam.radchenko.util.ResourceManager;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,21 +12,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class UserMySqlDao implements UserDao {
-    private static final String SELECT_ALL =
-            ResourceManager.QUERIES.getProperty("user.select.all");
-    private static final String INSERT =
-            ResourceManager.QUERIES.getProperty("user.insert");
-    private static final String UPDATE =
-            ResourceManager.QUERIES.getProperty("user.update");
-    private static final String DELETE =
-            ResourceManager.QUERIES.getProperty("user.delete");
-    private static final String COUNT =
-            ResourceManager.QUERIES.getProperty("user.count");
-    private static final String WHERE_ID =
-            ResourceManager.QUERIES.getProperty("user.where.id");
-    private static final String WHERE_LOGIN =
-            ResourceManager.QUERIES.getProperty("user.where.login");
-
 
     private final UtilMySqlDao<User> utilMySqlDao;
 
@@ -45,12 +29,12 @@ public class UserMySqlDao implements UserDao {
 
     @Override
     public Optional<User> findOne(Integer id) {
-        return utilMySqlDao.findOne(SELECT_ALL + WHERE_ID, id);
+        return utilMySqlDao.findOne("SELECT * FROM users WHERE user_id = ?", id);
     }
 
     @Override
     public List<User> findAll() {
-        return utilMySqlDao.findAll(SELECT_ALL);
+        return utilMySqlDao.findAll("SELECT * FROM users");
     }
 
     @Override
@@ -58,7 +42,7 @@ public class UserMySqlDao implements UserDao {
         if (skip < 0 || limit < 0) {
             throw new DaoException("Skip or limit params cannot be negative");
         }
-        return utilMySqlDao.findAll(SELECT_ALL + UtilMySqlDao.LIMIT, skip, limit);
+        return utilMySqlDao.findAll("SELECT * FROM users LIMIT ?,?", skip, limit);
     }
 
     @Override
@@ -73,7 +57,7 @@ public class UserMySqlDao implements UserDao {
         }
 
         Integer id = utilMySqlDao.executeInsertWithGeneratedPrimaryKey(
-                INSERT,
+                "INSERT INTO users (login, password, role, first_name, last_name, date_of_birth, gender) VALUES(?, ?, ?, ?, ?, ?, ?)",
                 Integer.class,
                 obj.getLogin(),
                 obj.getPassword(),
@@ -94,7 +78,7 @@ public class UserMySqlDao implements UserDao {
         }
 
         utilMySqlDao.executeUpdate(
-                UPDATE + WHERE_ID,
+                "UPDATE users SET login = ?, password = ?, role = ?, first_name = ?, last_name = ?, date_of_birth = ?, gender = ? WHERE user_id = ?",
                 obj.getLogin(),
                 obj.getPassword(),
                 obj.getRole().toString(),
@@ -108,13 +92,13 @@ public class UserMySqlDao implements UserDao {
     @Override
     public void delete(Integer id) {
         utilMySqlDao.executeUpdate(
-                DELETE + WHERE_ID,
+                "DELETE FROM users WHERE user_id = ?",
                 id);
     }
 
     @Override
     public long getCount() {
-        return utilMySqlDao.getRowsCount(COUNT);
+        return utilMySqlDao.getRowsCount("SELECT COUNT(user_id) FROM users");
     }
 
     @Override
@@ -124,7 +108,7 @@ public class UserMySqlDao implements UserDao {
 
     @Override
     public Optional<User> findOneByLogin(String login) {
-        return utilMySqlDao.findOne(SELECT_ALL + WHERE_LOGIN, login);
+        return utilMySqlDao.findOne("SELECT * FROM users WHERE login = ?", login);
     }
 
     @Override

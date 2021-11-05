@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.dao.ExhibitionDao;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.util.type.Status;
@@ -21,7 +23,8 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 class ExhibitionServiceTest {
     @InjectMocks
-    private final ExhibitionService exhibitionService = ExhibitionService.getInstance();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
     @Mock
     private ExhibitionDao exhibitionDao;
 

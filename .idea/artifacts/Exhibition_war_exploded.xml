@@ -1,11 +1,12 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="Exhibition_war_exploded">
+  <artifact type="exploded-war" name="Exhibition:war exploded">
     <output-path>$PROJECT_DIR$/target/Exhibition</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
         <module>Exhibition</module>
         <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
       </options>
     </properties>
     <root id="root">
@@ -14,6 +15,14 @@
           <element id="module-output" name="Exhibition" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.3.11" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.3.11" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.3.11" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.3.11" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.3.11" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.3.11" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.3.11" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.3.11" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.17" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.6.1" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />

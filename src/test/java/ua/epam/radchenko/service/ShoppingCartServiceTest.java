@@ -5,6 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.persistence.entity.Order;
 import ua.epam.radchenko.persistence.entity.User;
@@ -23,7 +25,8 @@ import static org.mockito.Mockito.never;
 @ExtendWith(MockitoExtension.class)
 class ShoppingCartServiceTest {
     @InjectMocks
-    private ShoppingCartService shoppingCartService = ShoppingCartService.getInstance();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private ShoppingCartService shoppingCartService = context.getBean("shoppingCartService", ShoppingCartService.class);
     @Mock
     private ExhibitionService exhibitionService;
 

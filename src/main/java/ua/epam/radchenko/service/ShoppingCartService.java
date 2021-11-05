@@ -2,6 +2,9 @@ package ua.epam.radchenko.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.persistence.entity.Order;
 import ua.epam.radchenko.persistence.entity.User;
@@ -15,20 +18,15 @@ import java.util.Optional;
  * that has to do with shopping cart
  * @see ShoppingCart
  */
+@Service
 public class ShoppingCartService {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(ShoppingCartService.class);
-    private ExhibitionService exhibitionService = ServiceFactory.getExhibitionService();
 
-    private ShoppingCartService() {
-    }
+    private final ExhibitionService exhibitionService;
 
-    private static class Singleton {
-        private static final ShoppingCartService INSTANCE = new ShoppingCartService();
-    }
-
-    public static ShoppingCartService getInstance() {
-        return ShoppingCartService.Singleton.INSTANCE;
+    public ShoppingCartService(ExhibitionService exhibitionService) {
+        this.exhibitionService = exhibitionService;
     }
 
     public boolean addItemToCart(ShoppingCart shoppingCart,

@@ -2,6 +2,8 @@ package ua.epam.radchenko.presentation.command.impl.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.presentation.command.Command;
@@ -10,7 +12,6 @@ import ua.epam.radchenko.presentation.util.Util;
 import ua.epam.radchenko.presentation.util.constants.Attributes;
 import ua.epam.radchenko.presentation.util.constants.RequestParameters;
 import ua.epam.radchenko.service.ExhibitionService;
-import ua.epam.radchenko.service.ServiceFactory;
 import ua.epam.radchenko.service.ShoppingCartService;
 import ua.epam.radchenko.service.entity.ShoppingCart;
 import ua.epam.radchenko.util.type.Status;
@@ -22,8 +23,9 @@ import java.util.Optional;
 public class PostCartAddItemCommand implements Command {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(PostCartAddItemCommand.class);
-    private final ExhibitionService exhibitionService = ServiceFactory.getExhibitionService();
-    private final ShoppingCartService shoppingCartService = ServiceFactory.getShoppingCartService();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
+    private final ShoppingCartService shoppingCartService = context.getBean("shoppingCartService", ShoppingCartService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

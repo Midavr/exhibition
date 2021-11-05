@@ -2,6 +2,9 @@ package ua.epam.radchenko.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.dao.OrderDao;
 import ua.epam.radchenko.persistence.dao.factory.DaoFactory;
 import ua.epam.radchenko.persistence.entity.Exhibition;
@@ -18,24 +21,16 @@ import java.util.List;
  * Intermediate layer between command layer and dao layer.
  * Service responsible for processing order-related operations
  */
+@Service
 public class OrderService {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OrderService.class);
     private OrderDao orderDao =
             DaoFactory.getInstance().getOrderDao();
-    private ExhibitionService exhibitionService =
-            ServiceFactory.getExhibitionService();
+    private final ExhibitionService exhibitionService;
 
-    private OrderService() {
-    }
-
-    private static class Singleton {
-
-        private static final OrderService INSTANCE = new OrderService();
-    }
-
-    public static OrderService getInstance() {
-        return OrderService.Singleton.INSTANCE;
+    public OrderService(ExhibitionService exhibitionService) {
+        this.exhibitionService = exhibitionService;
     }
 
     public List<Order> findAllOrdersByUserAndStatus(User user,

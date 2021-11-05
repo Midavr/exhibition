@@ -15,9 +15,6 @@ import java.util.Optional;
 public class UtilMySqlDao<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilMySqlDao.class);
 
-    static final String LIMIT_ONE = ResourceManager.QUERIES.getProperty("limit.one");
-    static final String LIMIT = ResourceManager.QUERIES.getProperty("limit");
-
     /**
      * Converts data from ResultSet to domain object
      */
@@ -35,7 +32,7 @@ public class UtilMySqlDao<T> {
      * @return Optional object, which contains retrieved object or null
      */
     public Optional<T> findOne(String query, Object... params) {
-        List<T> results = findAll(query + LIMIT_ONE, params);
+        List<T> results = findAll(query + " LIMIT 1", params);
         return Optional.ofNullable(results.isEmpty() ? null : results.get(0));
     }
 

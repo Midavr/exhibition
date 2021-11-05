@@ -1,5 +1,7 @@
 package ua.epam.radchenko.presentation.command.impl.admin;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.presentation.command.Command;
 import ua.epam.radchenko.presentation.command.CommandResult;
@@ -8,18 +10,16 @@ import ua.epam.radchenko.presentation.util.constants.Attributes;
 import ua.epam.radchenko.presentation.util.constants.Views;
 import ua.epam.radchenko.service.ExhibitionService;
 import ua.epam.radchenko.service.OrderService;
-import ua.epam.radchenko.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class GetAdminCatalogCommand implements Command {
-    private final ExhibitionService exhibitionService =
-            ServiceFactory.getExhibitionService();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 
-    private final OrderService orderService =
-            ServiceFactory.getOrderService();
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
+    private final OrderService orderService = context.getBean("orderService", OrderService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

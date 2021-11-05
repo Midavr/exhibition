@@ -1,5 +1,7 @@
 package ua.epam.radchenko.presentation.command.impl.user;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.entity.Order;
 import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.presentation.command.Command;
@@ -10,7 +12,6 @@ import ua.epam.radchenko.presentation.util.constants.Attributes;
 import ua.epam.radchenko.presentation.util.constants.RequestParameters;
 import ua.epam.radchenko.presentation.util.constants.Views;
 import ua.epam.radchenko.service.OrderService;
-import ua.epam.radchenko.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class GetOrdersCommand implements Command {
-    private final OrderService orderService = ServiceFactory.getOrderService();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    private final OrderService orderService = context.getBean("orderService", OrderService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
