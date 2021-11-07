@@ -24,7 +24,7 @@ import static org.mockito.Mockito.times;
 class ExhibitionServiceTest {
     @InjectMocks
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionServiceImpl", ExhibitionService.class);
     @Mock
     private ExhibitionDao exhibitionDao;
 

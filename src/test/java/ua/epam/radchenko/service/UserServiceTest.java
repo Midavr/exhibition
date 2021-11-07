@@ -12,7 +12,6 @@ import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.util.PasswordManager;
 import ua.epam.radchenko.util.type.Role;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
     @InjectMocks
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final UserService userService = context.getBean("userService", UserService.class);
+    private final UserService userService = context.getBean("userServiceImpl", UserService.class);
     @Mock
     private UserDao userDao;
     private final String login = "user";

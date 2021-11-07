@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class GetCreateExhibitionCommand implements Command {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionServiceImpl", ExhibitionService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

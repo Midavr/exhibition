@@ -1,17 +1,18 @@
-package ua.epam.radchenko.service;
+package ua.epam.radchenko.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
-import ua.epam.radchenko.SpringConfig;
 import ua.epam.radchenko.persistence.dao.OrderDao;
 import ua.epam.radchenko.persistence.dao.factory.DaoFactory;
 import ua.epam.radchenko.persistence.entity.Exhibition;
 import ua.epam.radchenko.persistence.entity.Order;
 import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.persistence.transaction.Transaction;
+import ua.epam.radchenko.service.ExhibitionService;
+import ua.epam.radchenko.service.OrderService;
 import ua.epam.radchenko.service.exeption.ServiceException;
+import ua.epam.radchenko.util.timed.Timed;
 import ua.epam.radchenko.util.type.Status;
 
 import java.math.BigDecimal;
@@ -21,18 +22,20 @@ import java.util.List;
  * Intermediate layer between command layer and dao layer.
  * Service responsible for processing order-related operations
  */
+
 @Service
-public class OrderService {
+public class OrderServiceImpl implements OrderService {
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OrderService.class);
+            LoggerFactory.getLogger(OrderServiceImpl.class);
     private OrderDao orderDao =
             DaoFactory.getInstance().getOrderDao();
     private final ExhibitionService exhibitionService;
 
-    public OrderService(ExhibitionService exhibitionService) {
-        this.exhibitionService = exhibitionService;
+    public OrderServiceImpl(ExhibitionService exhibitionServiceImpl) {
+        this.exhibitionService = exhibitionServiceImpl;
     }
 
+    @Override
     public List<Order> findAllOrdersByUserAndStatus(User user,
                                                                   boolean isExpired,
                                                                   long skip,
@@ -41,11 +44,13 @@ public class OrderService {
         return orderDao.findByUserAndStatus(user, isExpired, skip, limit);
     }
 
+    @Override
     public long getOrdersCountByUserAndStatus(User user, boolean isExpired) {
         LOGGER.debug("Attempt to get active orders count by user");
         return orderDao.getCountByUserAndStatus(user, isExpired);
     }
 
+    @Override
     public void processOrders(User user,
                                      List<Order> orders,
                                      BigDecimal totalPrice) {
@@ -66,6 +71,7 @@ public class OrderService {
         }
     }
 
+    @Override
     public List<Integer> countExhibitionsOrders(List<Exhibition> exhibitions) {
         LOGGER.debug("Attempt to count all exhibition orders");
         return orderDao.countByOrders(exhibitions);

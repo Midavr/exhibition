@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class GetOrdersCommand implements Command {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final OrderService orderService = context.getBean("orderService", OrderService.class);
+    private final OrderService orderService = context.getBean("orderServiceImpl", OrderService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

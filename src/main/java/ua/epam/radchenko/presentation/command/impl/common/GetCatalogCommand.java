@@ -27,7 +27,7 @@ public class GetCatalogCommand implements Command {
     private final static long RECORDS_PER_PAGE = 5;
     private static final Logger LOGGER = LoggerFactory.getLogger(GetCatalogCommand.class);
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionServiceImpl", ExhibitionService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

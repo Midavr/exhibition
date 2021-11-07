@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class GetShoppingCartCommand implements Command {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    ShoppingCartService shoppingCartService = context.getBean("shoppingCartService", ShoppingCartService.class);
+    ShoppingCartService shoppingCartService = context.getBean("shoppingCartServiceImpl", ShoppingCartService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

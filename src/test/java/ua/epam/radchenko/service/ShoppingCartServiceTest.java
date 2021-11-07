@@ -26,7 +26,7 @@ import static org.mockito.Mockito.never;
 class ShoppingCartServiceTest {
     @InjectMocks
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private ShoppingCartService shoppingCartService = context.getBean("shoppingCartService", ShoppingCartService.class);
+    private ShoppingCartService shoppingCartService = context.getBean("shoppingCartServiceImpl", ShoppingCartService.class);
     @Mock
     private ExhibitionService exhibitionService;
 

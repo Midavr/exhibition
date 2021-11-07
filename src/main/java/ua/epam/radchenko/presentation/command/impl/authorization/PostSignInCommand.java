@@ -22,7 +22,7 @@ import java.util.Optional;
 public class PostSignInCommand implements Command {
     private static Logger LOGGER = LoggerFactory.getLogger(PostSignInCommand.class);
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final UserService userService = context.getBean("userService", UserService.class);
+    private final UserService userServiceImpl = context.getBean("userServiceImpl", UserService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
@@ -36,7 +36,7 @@ public class PostSignInCommand implements Command {
         if (errors.isEmpty()) {
             LOGGER.debug("Try to sign in");
             Optional<User> userOpt =
-                    userService.signIn(userDTO.getLogin(), userDTO.getPassword());
+                    userServiceImpl.signIn(userDTO.getLogin(), userDTO.getPassword());
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
                 request.getSession().setAttribute(Attributes.USER, user);

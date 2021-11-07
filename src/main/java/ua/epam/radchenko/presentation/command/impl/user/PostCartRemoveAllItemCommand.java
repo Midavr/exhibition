@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PostCartRemoveAllItemCommand implements Command {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final ShoppingCartService shoppingCartService = context.getBean("shoppingCartService", ShoppingCartService.class);
+    private final ShoppingCartService shoppingCartService = context.getBean("shoppingCartServiceImpl", ShoppingCartService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

@@ -24,8 +24,8 @@ public class PostCartAddItemCommand implements Command {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(PostCartAddItemCommand.class);
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
-    private final ShoppingCartService shoppingCartService = context.getBean("shoppingCartService", ShoppingCartService.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionServiceImpl", ExhibitionService.class);
+    private final ShoppingCartService shoppingCartService = context.getBean("shoppingCartServiceImpl", ShoppingCartService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

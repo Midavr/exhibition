@@ -24,8 +24,8 @@ public class PostOrderPaymentCommand implements Command {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(PostOrderPaymentCommand.class);
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final OrderService orderService = context.getBean("orderService", OrderService.class);
-    private final ShoppingCartService shoppingCartService = context.getBean("shoppingCartService", ShoppingCartService.class);
+    private final OrderService orderService = context.getBean("orderServiceImpl", OrderService.class);
+    private final ShoppingCartService shoppingCartService = context.getBean("shoppingCartServiceImpl", ShoppingCartService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

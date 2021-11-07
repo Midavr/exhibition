@@ -21,7 +21,7 @@ import java.util.Map;
 public class PostSignUpCommand implements Command {
     private static Logger LOGGER = LoggerFactory.getLogger(PostSignUpCommand.class);
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private final UserService userService = context.getBean("userService", UserService.class);
+    private final UserService userService = context.getBean("userServiceImpl", UserService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

@@ -18,8 +18,8 @@ import java.util.List;
 public class GetAdminCatalogCommand implements Command {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 
-    private final ExhibitionService exhibitionService = context.getBean("exhibitionService", ExhibitionService.class);
-    private final OrderService orderService = context.getBean("orderService", OrderService.class);
+    private final ExhibitionService exhibitionService = context.getBean("exhibitionServiceImpl", ExhibitionService.class);
+    private final OrderService orderService = context.getBean("orderServiceImpl", OrderService.class);
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {

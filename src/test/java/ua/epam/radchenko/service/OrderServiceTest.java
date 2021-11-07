@@ -22,7 +22,7 @@ import static org.mockito.Mockito.times;
 class OrderServiceTest {
     @InjectMocks
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-    private OrderService orderService = context.getBean("orderService", OrderService.class);
+    private OrderService orderService = context.getBean("orderServiceImpl", OrderService.class);
     @Mock
     private OrderDao orderDao;
 
