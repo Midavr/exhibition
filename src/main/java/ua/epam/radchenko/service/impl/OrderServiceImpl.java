@@ -12,7 +12,6 @@ import ua.epam.radchenko.persistence.transaction.Transaction;
 import ua.epam.radchenko.service.ExhibitionService;
 import ua.epam.radchenko.service.OrderService;
 import ua.epam.radchenko.service.exeption.ServiceException;
-import ua.epam.radchenko.util.timed.Timed;
 import ua.epam.radchenko.util.type.Status;
 
 import java.math.BigDecimal;

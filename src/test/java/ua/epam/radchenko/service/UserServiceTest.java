@@ -12,6 +12,7 @@ import ua.epam.radchenko.persistence.entity.User;
 import ua.epam.radchenko.util.PasswordManager;
 import ua.epam.radchenko.util.type.Role;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
